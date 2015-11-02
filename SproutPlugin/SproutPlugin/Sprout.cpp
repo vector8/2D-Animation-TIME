@@ -11,9 +11,9 @@ void capturePicture(std::string outFilePath)
     {
 		hp::pc::PcPtr<hp::pc::IPcLink> link = hp::pc::HPPC::CreateLink();
         hp::pc::PcPtr<hp::pc::IPcMoment> moment = link->CaptureMoment();
-        std::wstring output_folder = OutputFolder(Timestamp(L"%Y-%m-%d_%H-%M-%S"));
+        //std::wstring output_folder = OutputFolder(Timestamp(L"%Y-%m-%d_%H-%M-%S"));
         hp::pc::PcPtr<hp::pc::IPcPicture> picture = link->ExtractPicture(moment);
-        std::wstring filename = std::wstring(outFilePath.begin(), outFilePath.end()) + L"\\MatImage.bmp";
+		std::wstring filename = std::wstring(outFilePath.begin(), outFilePath.end());
         BitmapImage(picture->Image()).Save(filename);
     }
     catch (const hp::pc::PcException& exception)
