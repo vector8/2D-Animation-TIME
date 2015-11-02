@@ -1,0 +1,9 @@
+syntax: glob
+GrabCutPlugin/Debug/*
+*.sdf
+*.suo
+GrabCutPlugin/GrabCutPlugin/x64/*
+GrabCutPlugin/x64/*
+SproutPlugin/Debug/*
+SproutPlugin/SproutPlugin/x64/*
+SproutPlugin/x64/*
