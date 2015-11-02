@@ -11,7 +11,7 @@ public class SproutPluginWrapper : MonoBehaviour
 
     public string captureSproutImage()
     {
-        string outputFilePath = "C:\\2DAnimStationTest\\" + "UseDateTimeStampHere" + ".bmp";
+        string outputFilePath = "C:\\2DAnimStationTest\\" + System.DateTime.Now.ToString("yyyyMMddHHmmssffff") + ".bmp";
 
         captureImageFromSprout(outputFilePath);
 
