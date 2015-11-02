@@ -1,9 +1,15 @@
 syntax: glob
-GrabCutPlugin/Debug/*
 *.sdf
 *.suo
 GrabCutPlugin/GrabCutPlugin/x64/*
-GrabCutPlugin/x64/*
-SproutPlugin/Debug/*
 SproutPlugin/SproutPlugin/x64/*
-SproutPlugin/x64/*
+SproutPlugin/x64/Debug/SproutPlugin.pdb
+SproutPlugin/x64/Debug/SproutPlugin.lib
+GrabCutPlugin/x64/Debug/GrabCutPlugin.dll
+GrabCutPlugin/x64/Debug/GrabCutPlugin.exp
+GrabCutPlugin/x64/Debug/GrabCutPlugin.ilk
+GrabCutPlugin/x64/Debug/GrabCutPlugin.lib
+GrabCutPlugin/x64/Debug/GrabCutPlugin.pdb
+SproutPlugin/x64/Debug/SproutPlugin.dll
+SproutPlugin/x64/Debug/SproutPlugin.exp
+SproutPlugin/x64/Debug/SproutPlugin.ilk
