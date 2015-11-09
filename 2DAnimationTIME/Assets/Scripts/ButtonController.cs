@@ -4,21 +4,47 @@ using System.Collections;
 
 public class ButtonController : MonoBehaviour
 {
-    public Button grabCutButton;
+    public Button removeBackgroundBtn;
+    public RawImage framePreview;
+    public GameObject loadingTxt, buttonGroup;
 
-    public SproutPluginWrapper sproutWrapper;
-    public GrabCutPluginWrapper grabCutWrapper;
+    //bool startCoroutine = false;
 
-    private string outputFilePath;
+    //void LateUpdate()
+    //{
+    //    if (startCoroutine)
+    //    {
+    //        startCoroutine = false;
+            
+    //    }
+    //}
 
     public void getImageFromSprout()
     {
-        outputFilePath = sproutWrapper.captureSproutImage();
-        grabCutButton.interactable = true;
+        setLoadingState(true);
+        Debug.Log("starting coroutine");
+        StartCoroutine(getFrameFromSprout());
+        Debug.Log("coroutine started");
     }
 
-    public void runGrabCut()
+    public void removeBackground()
     {
-        grabCutWrapper.runGrabCut(outputFilePath);
+    }
+
+    private void setLoadingState(bool loading)
+    {
+        loadingTxt.SetActive(loading);
+        buttonGroup.SetActive(!loading);
+        framePreview.enabled = !loading;
+    }
+
+    private IEnumerator getFrameFromSprout()
+    {
+        yield return new WaitForSeconds(0.5f);
+        Texture2D texture = SproutExtension.captureFrame();
+        framePreview.texture = texture;
+        setLoadingState(false);
+        Debug.Log("coroutine finished");
+        yield return null;
     }
 }

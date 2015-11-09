@@ -16,3 +16,9 @@ SproutPlugin/x64/Debug/SproutPlugin.ilk
 2DAnimationTIME/Library/*
 *.csproj
 2DAnimationTIME/2DAnimationTIME.sln
+GrabCutPlugin/GrabCutPlugin/Debug/*
+PluginTest/PluginTest/Debug/*
+PluginTest/PluginTest/x64/Debug/*
+PluginTest/x64/Debug/PluginTest.pdb
+PluginTest/x64/Debug/PluginTest.exe
+PluginTest/x64/Debug/PluginTest.ilk
