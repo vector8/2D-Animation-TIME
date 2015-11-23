@@ -8,16 +8,9 @@ public class ButtonController : MonoBehaviour
     public RawImage framePreview;
     public GameObject loadingTxt, buttonGroup;
 
-    //bool startCoroutine = false;
-
-    //void LateUpdate()
-    //{
-    //    if (startCoroutine)
-    //    {
-    //        startCoroutine = false;
-            
-    //    }
-    //}
+    /// Test variables ///
+    public bool usingSprout = true;
+    public Texture2D testTexture = null;
 
     public void getImageFromSprout()
     {
@@ -31,6 +24,14 @@ public class ButtonController : MonoBehaviour
     {
     }
 
+    public void done()
+    {
+        // Return image to 'edit animation' screen.
+
+        // animationEditScreen.addNewFrame(framePreview);
+        // someScreenManager.popScreen(); / .setScreen(ANIMATION_EDIT);
+    }
+
     private void setLoadingState(bool loading)
     {
         loadingTxt.SetActive(loading);
@@ -41,7 +42,15 @@ public class ButtonController : MonoBehaviour
     private IEnumerator getFrameFromSprout()
     {
         yield return new WaitForSeconds(0.5f);
-        Texture2D texture = SproutExtension.captureFrame();
+        Texture2D texture;
+        if (usingSprout)
+        {
+            texture = SproutExtension.captureFrame();
+        }
+        else
+        {
+            texture = testTexture;
+        }
         framePreview.texture = texture;
         setLoadingState(false);
         Debug.Log("coroutine finished");
