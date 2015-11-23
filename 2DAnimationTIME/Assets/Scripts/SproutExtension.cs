@@ -38,7 +38,6 @@ public static class SproutExtension
         const int DOWN_SAMPLE_RATE = 5;
 
         Texture2D frame;
-
         IPcLink link = HPPC.CreateLink();
         IPcMoment moment = link.CaptureMoment();
         IPcPicture picture = link.ExtractPicture(moment);
