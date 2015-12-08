@@ -9,6 +9,12 @@ namespace TIME
         public List<TIME.Frame> frames;
         public string name;
 
+        public Animation()
+        {
+            name = "";
+            frames = new List<TIME.Frame>();
+        }
+
         public Animation(string name)
         {
             frames = new List<TIME.Frame>();

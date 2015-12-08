@@ -6,11 +6,13 @@ public class AnimationListScreen : MonoBehaviour
     public GameObject animationGroup;
     public GameObject previewPrefab;
 
-    public void populateAnimations(TIME.Figurine fig)
+    public void populateAnimations()
     {
+        TIME.Figurine fig = ScreenManager.getScreenManager().currentFigurine;
+
         foreach(Transform child in animationGroup.transform)
         {
-            DestroyImmediate(child.gameObject);
+            Destroy(child.gameObject);
         }
 
         for (int i = 0; i < fig.animations.Count; i++)
