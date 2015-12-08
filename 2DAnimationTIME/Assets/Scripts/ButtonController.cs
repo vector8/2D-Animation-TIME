@@ -7,6 +7,7 @@ public class ButtonController : MonoBehaviour
     public Button removeBackgroundBtn;
     public RawImage framePreview;
     public GameObject loadingTxt, buttonGroup;
+    public FrameEditScreen frameEditScreen;
 
     /// Test variables ///
     public bool usingSprout = true;
@@ -51,9 +52,9 @@ public class ButtonController : MonoBehaviour
         {
             texture = testTexture;
         }
-        framePreview.texture = texture;
         setLoadingState(false);
         Debug.Log("coroutine finished");
+        frameEditScreen.setCurrentFrame(texture);
         yield return null;
     }
 }

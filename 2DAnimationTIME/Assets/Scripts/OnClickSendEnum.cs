@@ -13,7 +13,7 @@ public class OnClickSendEnum : MonoBehaviour
         Button btn = GetComponent<Button>();
         btn.onClick.AddListener(() =>
             {
-                screenManager.changeState(targetState);
+                //screenManager.changeState(targetState);
             });
     }
 }

@@ -20,7 +20,10 @@ public class RawImageAnimator : MonoBehaviour
     void Update()
     {
         if(anim == null || anim.frames.Count == 0)
+        {
+            rawImage.texture = null;
             return;
+        }
 
         timer += Time.deltaTime;
 
