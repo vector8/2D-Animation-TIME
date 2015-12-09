@@ -25,12 +25,26 @@ public class RawImageAnimator : MonoBehaviour
             return;
         }
 
+        if(currentFrameIndex >= anim.frames.Count)
+        {
+            currentFrameIndex = anim.frames.Count - 1;
+        }
+
+        int startFrameIndex = currentFrameIndex;
+
         timer += Time.deltaTime;
 
         while(timer > anim.frames[currentFrameIndex].duration)
         {
             timer -= anim.frames[currentFrameIndex].duration;
             currentFrameIndex = (currentFrameIndex + 1) % anim.frames.Count;
+
+            // To avoid infinite loops, if we reach the original frame index while looping, just set timer to zero and break
+            if (currentFrameIndex == startFrameIndex)
+            {
+                timer = 0;
+                break;
+            }
         }
 
         rawImage.texture = anim.frames[currentFrameIndex].texture;

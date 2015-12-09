@@ -4,10 +4,9 @@ using System.Collections;
 
 public class FrameEditScreen : MonoBehaviour
 {
-    private bool animationUpdated = false;
-
     public RawImage previousFrameOnionSkin;
     public RawImage framePreview;
+    public RawImageAnimator animPreview;
     public TIME.Animation currentAnim;
     public int currentFrameID;
 
@@ -16,10 +15,15 @@ public class FrameEditScreen : MonoBehaviour
         currentAnim = anim;
         currentFrameID = frameID;
 
-        if (currentFrameID > 0)
+        if (anim.frames.Count > 1)
         {
             previousFrameOnionSkin.enabled = true;
-            previousFrameOnionSkin.texture = currentAnim.frames[currentFrameID - 1].texture;
+            int prevFrameID = (currentFrameID - 1);
+            if(prevFrameID < 0)
+            {
+                prevFrameID += currentAnim.frames.Count;
+            }
+            previousFrameOnionSkin.texture = currentAnim.frames[prevFrameID].texture;
         }
         else
         {
@@ -27,6 +31,7 @@ public class FrameEditScreen : MonoBehaviour
         }
 
         framePreview.texture = currentAnim.frames[currentFrameID].texture;
+        animPreview.anim = currentAnim;
     }
 
     public void setCurrentFrame(Texture2D tex)
@@ -34,6 +39,32 @@ public class FrameEditScreen : MonoBehaviour
         TIME.Frame frame = currentAnim.frames[currentFrameID];
         frame.texture = tex;
         currentAnim.frames[currentFrameID] = frame;
-        framePreview.texture = currentAnim.frames[currentFrameID].texture;
+        framePreview.texture = tex;
+    }
+
+    public void done()
+    {
+        ScreenManager.getScreenManager().goToAnimationEditScreen(currentAnim);
+    }
+
+    public void durationChanged(string durationString)
+    {
+        TIME.Frame frame = currentAnim.frames[currentFrameID];
+
+        if (durationString.Length == 0)
+        {
+            frame.duration = 0;
+        }
+        else
+        {
+            frame.duration = float.Parse(durationString);
+        }
+        currentAnim.frames[currentFrameID] = frame;
+    }
+
+    public void deleteFrame()
+    {
+        currentAnim.frames.RemoveAt(currentFrameID);
+        ScreenManager.getScreenManager().goToAnimationEditScreen(currentAnim);
     }
 }

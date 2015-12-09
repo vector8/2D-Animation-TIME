@@ -34,6 +34,9 @@ public class AnimationEditScreen : MonoBehaviour
             GameObject durationGO = preview.transform.Find("Duration").gameObject;
             frameImage.GetComponent<RawImage>().texture = currentAnim.frames[i].texture;
             durationGO.GetComponent<InputField>().text = currentAnim.frames[i].duration.ToString();
+            FrameControl fc = durationGO.GetComponent<FrameControl>();
+            fc.frameID = i;
+            fc.animEditScreen = this;
         }
 
         RectTransform rectTransform = newFrameBtn.GetComponent<RectTransform>();
@@ -72,8 +75,21 @@ public class AnimationEditScreen : MonoBehaviour
     public void newFrame()
     {
         TIME.Frame frame = new TIME.Frame();
+        frame.duration = 1f;
         int frameID = currentAnim.frames.Count;
         currentAnim.frames.Add(frame);
+        ScreenManager.getScreenManager().goToFrameEditScreen(currentAnim, frameID);
+    }
+
+    public void frameDurationChanged(int frameID, float duration)
+    {
+        TIME.Frame frame = currentAnim.frames[frameID];
+        frame.duration = duration;
+        currentAnim.frames[frameID] = frame;
+    }
+
+    public void frameClicked(int frameID)
+    {
         ScreenManager.getScreenManager().goToFrameEditScreen(currentAnim, frameID);
     }
 }
