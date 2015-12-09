@@ -25,18 +25,10 @@ public class ButtonController : MonoBehaviour
     {
     }
 
-    public void done()
-    {
-        // Return image to 'edit animation' screen.
-
-        // animationEditScreen.addNewFrame(framePreview);
-        // someScreenManager.popScreen(); / .setScreen(ANIMATION_EDIT);
-    }
-
     private void setLoadingState(bool loading)
     {
         loadingTxt.SetActive(loading);
-        buttonGroup.SetActive(!loading);
+        //buttonGroup.SetActive(!loading);
         framePreview.enabled = !loading;
     }
 
