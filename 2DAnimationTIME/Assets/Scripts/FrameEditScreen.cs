@@ -9,6 +9,7 @@ public class FrameEditScreen : MonoBehaviour
     public RawImageAnimator animPreview;
     public TIME.Animation currentAnim;
     public int currentFrameID;
+    public InputField durationField;
 
     public void initialize(TIME.Animation anim, int frameID)
     {
@@ -32,6 +33,7 @@ public class FrameEditScreen : MonoBehaviour
 
         framePreview.texture = currentAnim.frames[currentFrameID].texture;
         animPreview.anim = currentAnim;
+        durationField.text = currentAnim.frames[currentFrameID].duration.ToString();
     }
 
     public void setCurrentFrame(Texture2D tex)
