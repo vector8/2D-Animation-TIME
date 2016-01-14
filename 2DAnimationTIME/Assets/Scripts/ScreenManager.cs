@@ -12,8 +12,8 @@ public class ScreenManager : MonoBehaviour
         NUMBER_SCREENS
     }
 
-    public GameObject placeRfidScreenTop, animationListScreenTop, animationPreviewScreenTop, frameAnimationPreviewScreenTop;
-    public GameObject animationListScreenBottom, animationEditScreenBottom, frameEditScreenBottom;
+    public GameObject placeRfidScreenTop, animationListScreenTop, animationPreviewScreenTop, frameAnimationPreviewScreenTop, createNewAnimationScreenTop;
+    public GameObject animationListScreenBottom, animationEditScreenBottom, frameEditScreenBottom, createNewAnimationScreenBottom;
     public ScreenStates currentState = ScreenStates.PLACE_RFID;
 
     public TIME.Figurine currentFigurine;
@@ -70,9 +70,11 @@ public class ScreenManager : MonoBehaviour
         animationListScreenTop.SetActive(false);
         animationPreviewScreenTop.SetActive(false);
         frameAnimationPreviewScreenTop.SetActive(false);
+        createNewAnimationScreenTop.SetActive(false);
         animationListScreenBottom.SetActive(false);
         animationEditScreenBottom.SetActive(false);
         frameEditScreenBottom.SetActive(false);
+        createNewAnimationScreenBottom.SetActive(false);
 
         placeRfidScreenTop.SetActive(true);
     }
@@ -82,8 +84,10 @@ public class ScreenManager : MonoBehaviour
         placeRfidScreenTop.SetActive(false);
         animationPreviewScreenTop.SetActive(false);
         frameAnimationPreviewScreenTop.SetActive(false);
+        createNewAnimationScreenTop.SetActive(false);
         animationEditScreenBottom.SetActive(false);
         frameEditScreenBottom.SetActive(false);
+        createNewAnimationScreenBottom.SetActive(false);
 
         animationListScreenTop.SetActive(true);
         animationListScreenBottom.SetActive(true);
@@ -92,11 +96,14 @@ public class ScreenManager : MonoBehaviour
         als.populateAnimations();
     }
 
-    public void createNewAnimAndGoToAnimEditScreen()
+    public void createNewAnimation()
     {
         TIME.Animation anim = new TIME.Animation();
+        TIME.Frame frame = new TIME.Frame();
+        frame.duration = 1f;
+        anim.frames.Add(frame);
         currentFigurine.animations.Add(anim);
-        goToAnimationEditScreen(anim);
+        goToFrameEditScreenBulk(anim, 0);
     }
     
     public void goToAnimationEditScreen(TIME.Animation anim)
@@ -104,8 +111,10 @@ public class ScreenManager : MonoBehaviour
         placeRfidScreenTop.SetActive(false);
         animationListScreenTop.SetActive(false);
         frameAnimationPreviewScreenTop.SetActive(false);
+        createNewAnimationScreenTop.SetActive(false);
         animationListScreenBottom.SetActive(false);
         frameEditScreenBottom.SetActive(false);
+        createNewAnimationScreenBottom.SetActive(false);
 
         animationPreviewScreenTop.SetActive(true);
         animationEditScreenBottom.SetActive(true);
@@ -119,13 +128,34 @@ public class ScreenManager : MonoBehaviour
         placeRfidScreenTop.SetActive(false);
         animationListScreenTop.SetActive(false);
         animationPreviewScreenTop.SetActive(false);
+        createNewAnimationScreenTop.SetActive(false);
         animationListScreenBottom.SetActive(false);
         animationEditScreenBottom.SetActive(false);
+        createNewAnimationScreenBottom.SetActive(false);
 
         frameAnimationPreviewScreenTop.SetActive(true);
         frameEditScreenBottom.SetActive(true);
 
         FrameEditScreen fes = frameEditScreenBottom.GetComponent<FrameEditScreen>();
+        fes.batchEditMode = false;
+        fes.initialize(anim, frameID);
+    }
+
+    public void goToFrameEditScreenBulk(TIME.Animation anim, int frameID)
+    {
+        placeRfidScreenTop.SetActive(false);
+        animationListScreenTop.SetActive(false);
+        animationPreviewScreenTop.SetActive(false);
+        frameAnimationPreviewScreenTop.SetActive(false);
+        animationListScreenBottom.SetActive(false);
+        animationEditScreenBottom.SetActive(false);
+        frameEditScreenBottom.SetActive(false);
+
+        createNewAnimationScreenTop.SetActive(true);
+        createNewAnimationScreenBottom.SetActive(true);
+
+        FrameEditScreen fes = createNewAnimationScreenBottom.GetComponent<FrameEditScreen>();
+        fes.batchEditMode = true;
         fes.initialize(anim, frameID);
     }
 
