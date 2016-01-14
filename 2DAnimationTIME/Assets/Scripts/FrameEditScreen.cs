@@ -10,6 +10,7 @@ public class FrameEditScreen : MonoBehaviour
     public TIME.Animation currentAnim;
     public int currentFrameID;
     public InputField durationField;
+    public bool batchEditMode = false;
 
     public void initialize(TIME.Animation anim, int frameID)
     {
@@ -36,12 +37,24 @@ public class FrameEditScreen : MonoBehaviour
         durationField.text = currentAnim.frames[currentFrameID].duration.ToString();
     }
 
-    public void setCurrentFrame(Texture2D tex)
+    public void setCurrentFrame(Texture2D tex, bool addNext = true)
     {
         TIME.Frame frame = currentAnim.frames[currentFrameID];
         frame.texture = tex;
         currentAnim.frames[currentFrameID] = frame;
         framePreview.texture = tex;
+
+        if(batchEditMode && addNext)
+        {
+            previousFrameOnionSkin.enabled = true;
+            previousFrameOnionSkin.texture = currentAnim.frames[currentFrameID].texture;
+            TIME.Frame newFrame = new TIME.Frame();
+            newFrame.duration = frame.duration;
+            currentFrameID = currentAnim.frames.Count;
+            currentAnim.frames.Add(newFrame);
+            framePreview.texture = currentAnim.frames[currentFrameID].texture;
+            durationField.text = currentAnim.frames[currentFrameID].duration.ToString();
+        }
     }
 
     public void done()

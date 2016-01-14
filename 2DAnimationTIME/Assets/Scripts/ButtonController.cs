@@ -4,7 +4,6 @@ using System.Collections;
 
 public class ButtonController : MonoBehaviour
 {
-    public Button removeBackgroundBtn;
     public RawImage framePreview;
     public GameObject loadingTxt, buttonGroup;
     public FrameEditScreen frameEditScreen;
@@ -16,13 +15,13 @@ public class ButtonController : MonoBehaviour
     public void getImageFromSprout()
     {
         setLoadingState(true);
-        Debug.Log("starting coroutine");
         StartCoroutine(getFrameFromSprout());
-        Debug.Log("coroutine started");
     }
 
-    public void removeBackground()
+    public void getImageFromSproutAndReturn()
     {
+        setLoadingState(true);
+        StartCoroutine(getFrameFromSprout(true));
     }
 
     private void setLoadingState(bool loading)
@@ -32,7 +31,7 @@ public class ButtonController : MonoBehaviour
         framePreview.enabled = !loading;
     }
 
-    private IEnumerator getFrameFromSprout()
+    private IEnumerator getFrameFromSprout(bool goBackToAnimEditScreen = false)
     {
         yield return new WaitForSeconds(0.5f);
         Texture2D texture;
@@ -45,8 +44,11 @@ public class ButtonController : MonoBehaviour
             texture = testTexture;
         }
         setLoadingState(false);
-        Debug.Log("coroutine finished");
-        frameEditScreen.setCurrentFrame(texture);
+        frameEditScreen.setCurrentFrame(texture, !goBackToAnimEditScreen);
+        if(goBackToAnimEditScreen)
+        {
+            frameEditScreen.done();
+        }
         yield return null;
     }
 }
