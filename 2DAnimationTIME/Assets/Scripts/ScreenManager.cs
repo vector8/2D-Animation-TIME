@@ -21,7 +21,7 @@ public class ScreenManager : MonoBehaviour
 
     private static ScreenManager screenManager = null;
 
-    public static ScreenManager getScreenManager()
+    public static ScreenManager getInstance()
     {
         if(screenManager == null)
         {
@@ -35,7 +35,7 @@ public class ScreenManager : MonoBehaviour
     {
         currentFigurine = TIME.Figurine.getOrCreateByKey("testFigurine");
         TIME.Animation anim = new TIME.Animation("idle");
-        TIME.Frame frame, frame2, frame3;
+        TIME.Frame frame = new TIME.Frame(), frame2 = new TIME.Frame(), frame3 = new TIME.Frame();
         frame.texture = testTexture;
         frame.duration = 0.5f;
         frame2.texture = testTexture2;
@@ -99,6 +99,7 @@ public class ScreenManager : MonoBehaviour
     public void createNewAnimation()
     {
         TIME.Animation anim = new TIME.Animation();
+        StartCoroutine(DatabaseManager.getInstance().createAnimation(anim));
         TIME.Frame frame = new TIME.Frame();
         frame.duration = 1f;
         anim.frames.Add(frame);

@@ -35,7 +35,7 @@ public static class SproutExtension
 
     public static Texture2D captureFrame()
     {
-        const int DOWN_SAMPLE_RATE = 5;
+        const int DOWN_SAMPLE_RATE = 1;
 
         Texture2D frame;
         IPcLink link = HPPC.CreateLink();
@@ -48,17 +48,24 @@ public static class SproutExtension
         int width = (int)rect.Width / DOWN_SAMPLE_RATE, height = (int)rect.Height / DOWN_SAMPLE_RATE;
         frame = new Texture2D(width, height);
 
+        UnityEngine.Color[] colors = new UnityEngine.Color[width * height];
+
         for (int x = 0; x < width; x++)
         {
             for (int y = 0; y < height; y++)
             {
                 System.Drawing.Color sysColor = bmp.GetPixel(x * DOWN_SAMPLE_RATE, y * DOWN_SAMPLE_RATE);
-                UnityEngine.Color unityColor = new UnityEngine.Color((float)sysColor.R / 255f, (float)sysColor.G / 255f, (float)sysColor.B / 255f, (float)sysColor.A / 255f);
-                frame.SetPixel(x, height - y, unityColor);
+                UnityEngine.Color32 uc32 = new UnityEngine.Color32(sysColor.R, sysColor.B, sysColor.G, sysColor.A);
+                //UnityEngine.Color unityColor = new UnityEngine.Color((float)sysColor.R / 255f, (float)sysColor.G / 255f, (float)sysColor.B / 255f, (float)sysColor.A / 255f);
+                colors[(height - y) * width + x] = uc32;
             }
         }
 
+        frame.SetPixels(colors);
+
         frame.Apply();
+
+        TextureScale.Point(frame, 512, 512);
 
         return frame;
     }
