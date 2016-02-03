@@ -9,7 +9,7 @@ public class OnClickSendEnum : MonoBehaviour
 
     void Start()
     {
-        screenManager = ScreenManager.getScreenManager();
+        screenManager = ScreenManager.getInstance();
         Button btn = GetComponent<Button>();
         btn.onClick.AddListener(() =>
             {

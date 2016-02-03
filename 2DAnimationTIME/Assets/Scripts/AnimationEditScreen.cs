@@ -58,7 +58,7 @@ public class AnimationEditScreen : MonoBehaviour
     {
         hideDeletePrompt();
 
-        ScreenManager sm = ScreenManager.getScreenManager();
+        ScreenManager sm = ScreenManager.getInstance();
         sm.currentFigurine.animations.Remove(currentAnim);
         sm.goToAnimationListScreen();
     }
@@ -78,7 +78,7 @@ public class AnimationEditScreen : MonoBehaviour
         frame.duration = 1f;
         int frameID = currentAnim.frames.Count;
         currentAnim.frames.Add(frame);
-        ScreenManager.getScreenManager().goToFrameEditScreen(currentAnim, frameID);
+        ScreenManager.getInstance().goToFrameEditScreen(currentAnim, frameID);
     }
 
     public void frameDurationChanged(int frameID, float duration)
@@ -90,6 +90,6 @@ public class AnimationEditScreen : MonoBehaviour
 
     public void frameClicked(int frameID)
     {
-        ScreenManager.getScreenManager().goToFrameEditScreen(currentAnim, frameID);
+        ScreenManager.getInstance().goToFrameEditScreen(currentAnim, frameID);
     }
 }

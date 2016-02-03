@@ -52,7 +52,7 @@ public class RawImageAnimator : MonoBehaviour
 
     public void addNewFrame(Texture2D texture, float duration)
     {
-        TIME.Frame newFrame;
+        TIME.Frame newFrame = new TIME.Frame();
         newFrame.texture = texture;
         newFrame.duration = duration;
         anim.frames.Add(newFrame);

@@ -8,7 +8,7 @@ public class AnimationListScreen : MonoBehaviour
 
     public void populateAnimations()
     {
-        TIME.Figurine fig = ScreenManager.getScreenManager().currentFigurine;
+        TIME.Figurine fig = ScreenManager.getInstance().currentFigurine;
 
         foreach(Transform child in animationGroup.transform)
         {

@@ -12,6 +12,6 @@ public class AnimClickControl : MonoBehaviour
 
     public void clicked()
     {
-        ScreenManager.getScreenManager().goToAnimationEditScreen(ria.anim);
+        ScreenManager.getInstance().goToAnimationEditScreen(ria.anim);
     }
 }

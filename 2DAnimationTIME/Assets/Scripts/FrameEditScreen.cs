@@ -42,6 +42,7 @@ public class FrameEditScreen : MonoBehaviour
         TIME.Frame frame = currentAnim.frames[currentFrameID];
         frame.texture = tex;
         currentAnim.frames[currentFrameID] = frame;
+        StartCoroutine(DatabaseManager.getInstance().createFrame(currentAnim, currentFrameID));
         framePreview.texture = tex;
 
         if(batchEditMode && addNext)
@@ -59,7 +60,7 @@ public class FrameEditScreen : MonoBehaviour
 
     public void done()
     {
-        ScreenManager.getScreenManager().goToAnimationEditScreen(currentAnim);
+        ScreenManager.getInstance().goToAnimationEditScreen(currentAnim);
     }
 
     public void durationChanged(string durationString)
@@ -80,6 +81,6 @@ public class FrameEditScreen : MonoBehaviour
     public void deleteFrame()
     {
         currentAnim.frames.RemoveAt(currentFrameID);
-        ScreenManager.getScreenManager().goToAnimationEditScreen(currentAnim);
+        ScreenManager.getInstance().goToAnimationEditScreen(currentAnim);
     }
 }
