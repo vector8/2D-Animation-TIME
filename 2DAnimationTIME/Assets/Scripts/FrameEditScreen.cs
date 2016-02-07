@@ -42,11 +42,11 @@ public class FrameEditScreen : MonoBehaviour
         TIME.Frame frame = currentAnim.frames[currentFrameID];
         frame.texture = tex;
         currentAnim.frames[currentFrameID] = frame;
-        StartCoroutine(DatabaseManager.getInstance().createFrame(currentAnim, currentFrameID));
         framePreview.texture = tex;
 
         if(batchEditMode && addNext)
         {
+            StartCoroutine(DatabaseManager.getInstance().createFrame(currentAnim, currentFrameID));
             previousFrameOnionSkin.enabled = true;
             previousFrameOnionSkin.texture = currentAnim.frames[currentFrameID].texture;
             TIME.Frame newFrame = new TIME.Frame();
@@ -60,6 +60,15 @@ public class FrameEditScreen : MonoBehaviour
 
     public void done()
     {
+        if(currentAnim.frames[currentFrameID].id == -1)
+        {
+            StartCoroutine(DatabaseManager.getInstance().createFrame(currentAnim, currentFrameID));
+        }
+        else
+        {
+            StartCoroutine(DatabaseManager.getInstance().updateFrame(currentAnim, currentFrameID));
+        }
+
         ScreenManager.getInstance().goToAnimationEditScreen(currentAnim);
     }
 

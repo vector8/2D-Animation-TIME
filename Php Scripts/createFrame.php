@@ -7,7 +7,7 @@
     // These variables are sent from Unity, we access them via
     // $_POST and make sure to santitize the input to mysql.
     
-    $animID     		= mysql_real_escape_string($_POST['animID']);
+    $animID     		= $_POST['animID'];
 	$frameIndex     	= $_POST['frameIndex'];
 	$duration			= $_POST['duration'];
 	$frameDataLength	= $_POST['frameDataLength'];
@@ -27,7 +27,7 @@
     
     $database = "playtimedb";
                      
-    $insert   = "INSERT INTO `animframes` (`id`, `animid`, `frameindex`, `duration`, `data`) VALUES (NULL, '$animID', '$frameIndex', '$duration', '$frameData');";
+    $insert   = "INSERT INTO `animframes` (`id`, `animid`, `frameindex`, `duration`, `data`) VALUES (NULL, $animID, $frameIndex, $duration, '$frameData');";
 	
 	$select = "SELECT `id` FROM `animframes` ORDER BY `id` DESC LIMIT 1;";
 
