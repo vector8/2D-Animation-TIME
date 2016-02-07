@@ -20,12 +20,8 @@
     // the mysql server.
     
     $database = "playtimedb";
-                     
-    $insertAnim   = "INSERT INTO `animations` (`id`, `name`) VALUES (NULL, NULL);";
 	
-	$selectAnim = "SELECT `id` FROM `animations` ORDER BY `id` DESC LIMIT 1;";
-	
-	$selectFig = "SELECT `ID` FROM `figurines` WHERE `rfidKey` = '$rfidKey';";
+	$selectAnims = "SELECT `figanims`.`animid` AS animID FROM `figurines` INNER JOIN `figanims` ON `figanims`.`figid` = `figurines`.`ID` WHERE `figurines`.`rfidKey` = '$rfidKey';";
 
     // o--------------------------------------------------------
     // | Access database
@@ -35,19 +31,11 @@
     
     $connection = mysql_connect($server, $username, $password) or die(mysql_error());
     
-    $result = mysql_select_db($database, $connection) or die(mysql_error()); 
-    $result = mysql_query($insertAnim, $connection) or die($insertAnim."<br/><br/>".mysql_error());
-    $result = mysql_query($selectAnim, $connection) or die($selectAnim."<br/><br/>".mysql_error());
-	$row = mysql_fetch_array($result);
-    $animID = $row['id'];
-	$result = mysql_query($selectFig, $connection) or die($selectFig."<br/><br/>".mysql_error());
-	$row = mysql_fetch_array($result);
-	$figID = $row['ID'];
+    $result = mysql_select_db($database, $connection) or die(mysql_error());
+    $result = mysql_query($selectAnims, $connection) or die($selectAnims."<br/><br/>".mysql_error());
 	
-	$insertFigAnim = "INSERT INTO `figanims` (`figid`, `animid`) VALUES ('$figID', '$animID');";
-	$result = mysql_query($insertFigAnim, $connection) or die($insertFigAnim."<br/><br/>".mysql_error());
-	
-	echo $animID;
+	while ($row = mysql_fetch_array($result))
+        echo $row['animID'] . "<br>";
 	
     // Close the connection, we're done here.
     

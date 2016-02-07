@@ -33,19 +33,21 @@ public class ScreenManager : MonoBehaviour
 
     void Start()
     {
-        currentFigurine = TIME.Figurine.getOrCreateByKey("testFigurine");
-        TIME.Animation anim = new TIME.Animation("idle");
-        TIME.Frame frame = new TIME.Frame(), frame2 = new TIME.Frame(), frame3 = new TIME.Frame();
-        frame.texture = testTexture;
-        frame.duration = 0.5f;
-        frame2.texture = testTexture2;
-        frame2.duration = 0.5f;
-        frame3.texture = testTexture3;
-        frame3.duration = 0.5f;
-        anim.frames.Add(frame);
-        anim.frames.Add(frame2);
-        anim.frames.Add(frame3);
-        currentFigurine.animations.Add(anim);
+        // The following is all test data.
+        currentFigurine = new TIME.Figurine("680088977f");
+        StartCoroutine(DatabaseManager.getInstance().getAnimations(currentFigurine));
+        //TIME.Animation anim = new TIME.Animation("idle");
+        //TIME.Frame frame = new TIME.Frame(), frame2 = new TIME.Frame(), frame3 = new TIME.Frame();
+        //frame.texture = testTexture;
+        //frame.duration = 0.5f;
+        //frame2.texture = testTexture2;
+        //frame2.duration = 0.5f;
+        //frame3.texture = testTexture3;
+        //frame3.duration = 0.5f;
+        //anim.frames.Add(frame);
+        //anim.frames.Add(frame2);
+        //anim.frames.Add(frame3);
+        //currentFigurine.animations.Add(anim);
     }
 
     //public void changeState(ScreenStates newState)
@@ -99,7 +101,7 @@ public class ScreenManager : MonoBehaviour
     public void createNewAnimation()
     {
         TIME.Animation anim = new TIME.Animation();
-        StartCoroutine(DatabaseManager.getInstance().createAnimation(anim));
+        StartCoroutine(DatabaseManager.getInstance().createAnimation(currentFigurine.key, anim));
         TIME.Frame frame = new TIME.Frame();
         frame.duration = 1f;
         anim.frames.Add(frame);

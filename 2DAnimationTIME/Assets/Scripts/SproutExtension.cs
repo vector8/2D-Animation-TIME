@@ -55,7 +55,7 @@ public static class SproutExtension
             for (int y = 0; y < height; y++)
             {
                 System.Drawing.Color sysColor = bmp.GetPixel(x * DOWN_SAMPLE_RATE, y * DOWN_SAMPLE_RATE);
-                UnityEngine.Color32 uc32 = new UnityEngine.Color32(sysColor.R, sysColor.B, sysColor.G, sysColor.A);
+                Color32 uc32 = new Color32(sysColor.R, sysColor.B, sysColor.G, sysColor.A);
                 //UnityEngine.Color unityColor = new UnityEngine.Color((float)sysColor.R / 255f, (float)sysColor.G / 255f, (float)sysColor.B / 255f, (float)sysColor.A / 255f);
                 colors[(height - y) * width + x] = uc32;
             }

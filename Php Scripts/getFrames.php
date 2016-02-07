@@ -7,7 +7,7 @@
     // These variables are sent from Unity, we access them via
     // $_POST and make sure to santitize the input to mysql.
     
-    $rfidKey     = mysql_real_escape_string($_POST['rfidKey']);
+    $animID     = $_POST['animID'];
 
     // These settings define where the server is located, and
     // which credentials we use to connect to that server.  
@@ -20,12 +20,8 @@
     // the mysql server.
     
     $database = "playtimedb";
-                     
-    $insertAnim   = "INSERT INTO `animations` (`id`, `name`) VALUES (NULL, NULL);";
 	
-	$selectAnim = "SELECT `id` FROM `animations` ORDER BY `id` DESC LIMIT 1;";
-	
-	$selectFig = "SELECT `ID` FROM `figurines` WHERE `rfidKey` = '$rfidKey';";
+	$selectFrames = "SELECT `id`, `frameindex`, `duration` FROM `animframes` WHERE `animid` = $animID;";
 
     // o--------------------------------------------------------
     // | Access database
@@ -35,19 +31,13 @@
     
     $connection = mysql_connect($server, $username, $password) or die(mysql_error());
     
-    $result = mysql_select_db($database, $connection) or die(mysql_error()); 
-    $result = mysql_query($insertAnim, $connection) or die($insertAnim."<br/><br/>".mysql_error());
-    $result = mysql_query($selectAnim, $connection) or die($selectAnim."<br/><br/>".mysql_error());
-	$row = mysql_fetch_array($result);
-    $animID = $row['id'];
-	$result = mysql_query($selectFig, $connection) or die($selectFig."<br/><br/>".mysql_error());
-	$row = mysql_fetch_array($result);
-	$figID = $row['ID'];
+    $result = mysql_select_db($database, $connection) or die(mysql_error());
+    $result = mysql_query($selectFrames, $connection) or die($selectFrames."<br/><br/>".mysql_error());
 	
-	$insertFigAnim = "INSERT INTO `figanims` (`figid`, `animid`) VALUES ('$figID', '$animID');";
-	$result = mysql_query($insertFigAnim, $connection) or die($insertFigAnim."<br/><br/>".mysql_error());
-	
-	echo $animID;
+	while ($row = mysql_fetch_array($result))
+        echo $row['id'] . "," 
+		. $row['frameindex'] . "," 
+		. $row['duration'] . ",<br>";
 	
     // Close the connection, we're done here.
     
