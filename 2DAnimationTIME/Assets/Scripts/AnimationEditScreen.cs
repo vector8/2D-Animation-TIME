@@ -60,6 +60,7 @@ public class AnimationEditScreen : MonoBehaviour
 
         ScreenManager sm = ScreenManager.getInstance();
         sm.currentFigurine.animations.Remove(currentAnim);
+        StartCoroutine(DatabaseManager.getInstance().deleteAnimation(currentAnim));
         sm.goToAnimationListScreen();
     }
 

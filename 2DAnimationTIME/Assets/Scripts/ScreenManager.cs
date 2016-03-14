@@ -101,9 +101,11 @@ public class ScreenManager : MonoBehaviour
     public void createNewAnimation()
     {
         TIME.Animation anim = new TIME.Animation();
-        StartCoroutine(DatabaseManager.getInstance().createAnimation(currentFigurine.key, anim));
+        DatabaseManager.getInstance().createdAnimation = anim;
+        StartCoroutine(DatabaseManager.getInstance().createAnimation(currentFigurine.key));
         TIME.Frame frame = new TIME.Frame();
         frame.duration = 1f;
+        DatabaseManager.getInstance().createdFrame = frame;
         anim.frames.Add(frame);
         currentFigurine.animations.Add(anim);
         goToFrameEditScreenBulk(anim, 0);

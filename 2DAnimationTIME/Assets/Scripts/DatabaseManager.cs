@@ -4,9 +4,12 @@ using System.Collections;
 
 public class DatabaseManager : MonoBehaviour
 {
-    public string databaseAddress = "localhost";
+    public string databaseAddress;
 
     private static DatabaseManager databaseManager = null;
+
+    public TIME.Animation createdAnimation;
+    public TIME.Frame createdFrame;
 
     public static DatabaseManager getInstance()
     {
@@ -60,7 +63,7 @@ public class DatabaseManager : MonoBehaviour
         }
     }
 
-    public IEnumerator createAnimation(string rfidKey, TIME.Animation anim)
+    public IEnumerator createAnimation(string rfidKey)
     {
         string url = "http://" + databaseAddress + "/playtime/createAnimation.php";
 
@@ -72,17 +75,10 @@ public class DatabaseManager : MonoBehaviour
 
         yield return www;
 
-        //string[] delimiters = { "<br>" };
-        //string[] results = www.text.Split(delimiters, StringSplitOptions.RemoveEmptyEntries);
-        //if (results.Length == 0)
-        //{
-        //    // An has error occurred...
-        //}
-        //else
-        //{
-        //Debug.Log(www.text);
-        anim.id = int.Parse(www.text);
-        //}
+        if(createdAnimation != null)
+        {
+            createdAnimation.id = int.Parse(www.text);
+        }
     }
 
     public IEnumerator createFrame(TIME.Animation anim, int index)
@@ -101,9 +97,14 @@ public class DatabaseManager : MonoBehaviour
 
         WWW www = new WWW(url, form);
 
-        yield return www;
+        while (!www.isDone && www.error == null) ;
 
-        anim.frames[index].id = int.Parse(www.text);
+        if (createdFrame != null)
+        {
+            createdFrame.id = int.Parse(www.text);
+        }
+
+        yield return null;
     }
 
     public IEnumerator updateFrame(TIME.Animation anim, int index)
@@ -191,5 +192,31 @@ public class DatabaseManager : MonoBehaviour
 
         // Set the frame data using the downloaded bytes
         frame.setBytes(www.bytes);
+    }
+
+    public IEnumerator deleteAnimation(TIME.Animation anim)
+    {
+        string url = "http://" + databaseAddress + "/playtime/deleteAnimation.php";
+
+        WWWForm form = new WWWForm();
+
+        form.AddField("animID", anim.id);
+
+        WWW www = new WWW(url, form);
+
+        yield return www;
+    }
+
+    public IEnumerator deleteFrame(TIME.Frame frame)
+    {
+        string url = "http://" + databaseAddress + "/playtime/deleteFrame.php";
+
+        WWWForm form = new WWWForm();
+
+        form.AddField("frameID", frame.id);
+
+        WWW www = new WWW(url, form);
+
+        yield return www;
     }
 }
