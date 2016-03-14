@@ -47,8 +47,8 @@
     // back to Unity. The output format for each line will be: 
     // {game}:{player}:{score}
     
-    while ($row = mysql_fetch_array($result))
-        echo $row['id'];
+    $row = mysql_fetch_array($result);
+    echo $row['id'];
   
     // Close the connection, we're done here.
     

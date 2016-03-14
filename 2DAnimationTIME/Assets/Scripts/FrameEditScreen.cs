@@ -8,20 +8,20 @@ public class FrameEditScreen : MonoBehaviour
     public RawImage framePreview;
     public RawImageAnimator animPreview;
     public TIME.Animation currentAnim;
-    public int currentFrameID;
+    public int currentFrameIndex;
     public InputField durationField;
     public bool batchEditMode = false;
 
     public void initialize(TIME.Animation anim, int frameID)
     {
         currentAnim = anim;
-        currentFrameID = frameID;
+        currentFrameIndex = frameID;
 
         if (anim.frames.Count > 1)
         {
             previousFrameOnionSkin.enabled = true;
-            int prevFrameID = (currentFrameID - 1);
-            if(prevFrameID < 0)
+            int prevFrameID = (currentFrameIndex - 1);
+            if (prevFrameID < 0)
             {
                 prevFrameID += currentAnim.frames.Count;
             }
@@ -32,41 +32,43 @@ public class FrameEditScreen : MonoBehaviour
             previousFrameOnionSkin.enabled = false;
         }
 
-        framePreview.texture = currentAnim.frames[currentFrameID].texture;
+        framePreview.texture = currentAnim.frames[currentFrameIndex].texture;
         animPreview.anim = currentAnim;
-        durationField.text = currentAnim.frames[currentFrameID].duration.ToString();
+        durationField.text = currentAnim.frames[currentFrameIndex].duration.ToString();
     }
 
     public void setCurrentFrame(Texture2D tex, bool addNext = true)
     {
-        TIME.Frame frame = currentAnim.frames[currentFrameID];
+        TIME.Frame frame = currentAnim.frames[currentFrameIndex];
         frame.texture = tex;
-        currentAnim.frames[currentFrameID] = frame;
+        currentAnim.frames[currentFrameIndex] = frame;
         framePreview.texture = tex;
 
-        if(batchEditMode && addNext)
+        if (batchEditMode && addNext)
         {
-            StartCoroutine(DatabaseManager.getInstance().createFrame(currentAnim, currentFrameID));
-            previousFrameOnionSkin.enabled = true;
-            previousFrameOnionSkin.texture = currentAnim.frames[currentFrameID].texture;
+            StartCoroutine(DatabaseManager.getInstance().createFrame(currentAnim, currentFrameIndex));
             TIME.Frame newFrame = new TIME.Frame();
+            DatabaseManager.getInstance().createdFrame = newFrame;
+            previousFrameOnionSkin.enabled = true;
+            previousFrameOnionSkin.texture = currentAnim.frames[currentFrameIndex].texture;
             newFrame.duration = frame.duration;
-            currentFrameID = currentAnim.frames.Count;
+            currentFrameIndex = currentAnim.frames.Count;
             currentAnim.frames.Add(newFrame);
-            framePreview.texture = currentAnim.frames[currentFrameID].texture;
-            durationField.text = currentAnim.frames[currentFrameID].duration.ToString();
+            framePreview.texture = currentAnim.frames[currentFrameIndex].texture;
+            durationField.text = currentAnim.frames[currentFrameIndex].duration.ToString();
         }
     }
 
     public void done()
     {
-        if(currentAnim.frames[currentFrameID].id == -1)
+        if (currentAnim.frames[currentFrameIndex].id == -1)
         {
-            StartCoroutine(DatabaseManager.getInstance().createFrame(currentAnim, currentFrameID));
+            DatabaseManager.getInstance().createdFrame = currentAnim.frames[currentFrameIndex];
+            StartCoroutine(DatabaseManager.getInstance().createFrame(currentAnim, currentFrameIndex));
         }
         else
         {
-            StartCoroutine(DatabaseManager.getInstance().updateFrame(currentAnim, currentFrameID));
+            StartCoroutine(DatabaseManager.getInstance().updateFrame(currentAnim, currentFrameIndex));
         }
 
         ScreenManager.getInstance().goToAnimationEditScreen(currentAnim);
@@ -74,7 +76,7 @@ public class FrameEditScreen : MonoBehaviour
 
     public void durationChanged(string durationString)
     {
-        TIME.Frame frame = currentAnim.frames[currentFrameID];
+        TIME.Frame frame = currentAnim.frames[currentFrameIndex];
 
         if (durationString.Length == 0)
         {
@@ -84,12 +86,13 @@ public class FrameEditScreen : MonoBehaviour
         {
             frame.duration = float.Parse(durationString);
         }
-        currentAnim.frames[currentFrameID] = frame;
+        currentAnim.frames[currentFrameIndex] = frame;
     }
 
     public void deleteFrame()
     {
-        currentAnim.frames.RemoveAt(currentFrameID);
+        StartCoroutine(DatabaseManager.getInstance().deleteFrame(currentAnim.frames[currentFrameIndex]));
+        currentAnim.frames.RemoveAt(currentFrameIndex);
         ScreenManager.getInstance().goToAnimationEditScreen(currentAnim);
     }
 }
