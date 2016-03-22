@@ -11,8 +11,13 @@
 	$frameIndex     	= $_POST['frameIndex'];
 	$duration			= $_POST['duration'];
 	$frameDataLength	= $_POST['frameDataLength'];
-	$myFile				= fopen($_FILES['frameData']['tmp_name'],'r');
-	$frameData			= fread($myFile, $frameDataLength);
+	$fileName			= uniqid();
+	$folder				= "C:" . DIRECTORY_SEPARATOR . DIRECTORY_SEPARATOR . "PlayTIME_Data" . DIRECTORY_SEPARATOR . DIRECTORY_SEPARATOR . "images" . DIRECTORY_SEPARATOR;
+	//$myFile				= fopen($_FILES['frameData']['tmp_name'],'r');
+	//$frameData			= fread($myFile, $frameDataLength);
+	$path = $folder . DIRECTORY_SEPARATOR . $fileName;
+	
+	//echo($_FILES['frameData']['error']);
 
     // These settings define where the server is located, and
     // which credentials we use to connect to that server.  
@@ -27,9 +32,27 @@
     
     $database = "playtimedb";
                      
-    $insert   = "INSERT INTO `animframes` (`id`, `animid`, `frameindex`, `duration`, `data`) VALUES (NULL, $animID, $frameIndex, $duration, '$frameData');";
+    $insert   = "INSERT INTO `animframes` (`id`, `animid`, `frameindex`, `duration`, `data`) 
+	VALUES (NULL, $animID, $frameIndex, $duration, '" . $path . "');";
 	
 	$select = "SELECT `id` FROM `animframes` ORDER BY `id` DESC LIMIT 1;";
+	
+	if(!file_exists($folder))
+	{
+		if(!mkdir($folder, null, true))
+		{
+			echo('Failed to create folder');
+		}
+		else
+		{
+			echo('created folder');
+		}
+	}
+	
+	if(!move_uploaded_file($_FILES['frameData']['tmp_name'], $path))
+	{
+		echo('move uploaded file failed');
+	}
 
     // o--------------------------------------------------------
     // | Access database

@@ -35,7 +35,23 @@
     $result = mysql_query($select, $connection) or die($select."<br/><br/>".mysql_error());
 	
 	$row = mysql_fetch_array($result);
-	echo $row['data'];
+	$fileName = $row['data'];
+	
+	if (file_exists($fileName)) 
+	{
+		header('Content-Description: File Transfer');
+		header('Content-Type: application/octet-stream');
+		header('Content-Disposition: attachment; filename="'.basename($fileName).'"');
+		header('Expires: 0');
+		header('Cache-Control: must-revalidate');
+		header('Pragma: public');
+		header('Content-Length: ' . filesize($fileName));
+		readfile($fileName);
+	}
+	else
+	{
+		echo('file read failed');
+	}
 	
     // Close the connection, we're done here.
     

@@ -20,7 +20,8 @@
     // the mysql server.
     
     $database = "playtimedb";
-		
+	
+	$select = "SELECT `data` FROM `animframes` WHERE `animid` = $animID;";
 	$deleteAnimFrames = "DELETE FROM `animframes` WHERE `animid` = $animID;";
 	$deleteFigAnims = "DELETE FROM `figanims` WHERE `animid` = $animID;";
 	$deleteAnims = "DELETE FROM `animations` WHERE `id` = $animID;";
@@ -34,6 +35,25 @@
     $connection = mysql_connect($server, $username, $password) or die(mysql_error());
     
     $result = mysql_select_db($database, $connection) or die(mysql_error());
+	$result = mysql_query($select, $connection) or die($select."<br/><br/>".mysql_error());
+	
+	while ($row = mysql_fetch_array($result))
+	{
+		$fileName = $row['data'];
+		
+		$success = FALSE;
+		
+		if(file_exists($fileName))
+		{
+			$success = unlink($fileName);
+		}
+		
+		if(!$success)
+		{
+			echo('delete failed');
+		}
+	}
+	
     $result = mysql_query($deleteAnimFrames, $connection) or die($deleteAnimFrames."<br/><br/>".mysql_error());
     $result = mysql_query($deleteFigAnims, $connection) or die($deleteFigAnims."<br/><br/>".mysql_error());
     $result = mysql_query($deleteAnims, $connection) or die($deleteAnims."<br/><br/>".mysql_error());
