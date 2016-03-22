@@ -36,6 +36,7 @@ public static class SproutExtension
     public static Texture2D captureFrame()
     {
         const int DOWN_SAMPLE_RATE = 1;
+        int FRAME_WIDTH = 512;
 
         Texture2D frame;
         IPcLink link = HPPC.CreateLink();
@@ -46,26 +47,39 @@ public static class SproutExtension
         GraphicsUnit units = GraphicsUnit.Pixel;
         RectangleF rect = bmp.GetBounds(ref units);
         int width = (int)rect.Width / DOWN_SAMPLE_RATE, height = (int)rect.Height / DOWN_SAMPLE_RATE;
-        frame = new Texture2D(width, height);
+        frame = new Texture2D(FRAME_WIDTH, FRAME_WIDTH);
 
-        UnityEngine.Color[] colors = new UnityEngine.Color[width * height];
+        int xOffset = (width / 2) - (FRAME_WIDTH / 2);
+        int yOffset = (height / 2) - (FRAME_WIDTH / 2);
 
-        for (int x = 0; x < width; x++)
+        UnityEngine.Color[] colors = new UnityEngine.Color[FRAME_WIDTH * FRAME_WIDTH];
+
+        for (int x = 0; x < FRAME_WIDTH; x++)
         {
-            for (int y = 0; y < height; y++)
+            for (int y = 0; y < FRAME_WIDTH; y++)
             {
-                System.Drawing.Color sysColor = bmp.GetPixel(x * DOWN_SAMPLE_RATE, y * DOWN_SAMPLE_RATE);
+                System.Drawing.Color sysColor = bmp.GetPixel(xOffset + x, yOffset + y);
                 Color32 uc32 = new Color32(sysColor.R, sysColor.B, sysColor.G, sysColor.A);
                 //UnityEngine.Color unityColor = new UnityEngine.Color((float)sysColor.R / 255f, (float)sysColor.G / 255f, (float)sysColor.B / 255f, (float)sysColor.A / 255f);
-                colors[(height - y) * width + x] = uc32;
+                int index = (FRAME_WIDTH - 1 - y) * FRAME_WIDTH + x;
+                if(index < colors.Length && index >= 0)
+                {
+                    colors[index] = uc32;
+                }
+                else
+                {
+                    Debug.Log("Index out of range.");
+                }
             }
         }
+
+        // test - only take a square of pixels in middle of screen
 
         frame.SetPixels(colors);
 
         frame.Apply();
 
-        TextureScale.Point(frame, 512, 512);
+        //TextureScale.Point(frame, 512, 512);
 
         return frame;
     }
