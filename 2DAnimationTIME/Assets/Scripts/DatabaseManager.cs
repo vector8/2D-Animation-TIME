@@ -77,7 +77,10 @@ public class DatabaseManager : MonoBehaviour
 
         if(createdAnimation != null)
         {
-            createdAnimation.id = int.Parse(www.text);
+            if (!int.TryParse(www.text, out createdAnimation.id))
+            {
+                print(www.text);
+            }
         }
     }
 
@@ -101,7 +104,10 @@ public class DatabaseManager : MonoBehaviour
 
         if (createdFrame != null)
         {
-            createdFrame.id = int.Parse(www.text);
+            if(!int.TryParse(www.text, out createdFrame.id))
+            {
+                print(www.text);
+            }
         }
 
         yield return null;
