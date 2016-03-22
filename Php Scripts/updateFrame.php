@@ -11,8 +11,8 @@
 	$frameIndex     	= $_POST['frameIndex'];
 	$duration			= $_POST['duration'];
 	$frameDataLength	= $_POST['frameDataLength'];
-	$myFile				= fopen($_FILES['frameData']['tmp_name'],'r');
-	$frameData			= fread($myFile, $frameDataLength);
+	//$myFile				= fopen($_FILES['frameData']['tmp_name'],'r');
+	//$frameData			= fread($myFile, $frameDataLength);
 
     // These settings define where the server is located, and
     // which credentials we use to connect to that server.  
@@ -27,7 +27,9 @@
     
     $database = "playtimedb";
                      
-    $update   = "UPDATE `animframes` SET `frameindex` = $frameIndex, `duration` = $duration, `data` = $frameData WHERE `id` = $id;";
+	$select = "SELECT `data` FROM `animframes` WHERE `id` = $id;";
+					 
+    $update   = "UPDATE `animframes` SET `frameindex` = $frameIndex, `duration` = $duration WHERE `id` = $id;";
 
     // o--------------------------------------------------------
     // | Access database
@@ -38,11 +40,17 @@
     $connection = mysql_connect($server, $username, $password) or die(mysql_error());
     
     $result = mysql_select_db($database, $connection) or die(mysql_error()); 
-    $result = mysql_query($update, $connection) or die($insert."<br/><br/>".mysql_error());
-
-    // Finally, go through top 10 players and return the result
-    // back to Unity. The output format for each line will be: 
-    // {game}:{player}:{score}
+    $result = mysql_query($select, $connection) or die($select."<br/><br/>".mysql_error());
+	
+	$row = mysql_fetch_array($result);
+    $fileName = $row['data'];
+	
+    $result = mysql_query($update, $connection) or die($update."<br/><br/>".mysql_error());
+	
+	if(!move_uploaded_file($_FILES['frameData']['tmp_name'], $fileName))
+	{
+		echo('move uploaded file failed');
+	}
   
     // Close the connection, we're done here.
     

@@ -21,6 +21,7 @@
     
     $database = "playtimedb";
 	
+	$selectData = "SELECT `data` FROM animframes WHERE id = $frameID;";
 	$selectFrameIndex = "SELECT frameindex, animid FROM animframes WHERE id = $frameID LIMIT 1 INTO @index, @animID;";
 	$updateFrameIndices = "UPDATE animframes SET frameindex = frameindex - 1 WHERE frameindex > @index AND animid = @animID;";
 	$deleteAnimFrames = "DELETE FROM `animframes` WHERE `id` = $frameID;";
@@ -34,6 +35,23 @@
     $connection = mysql_connect($server, $username, $password) or die(mysql_error());
     
     $result = mysql_select_db($database, $connection) or die(mysql_error());
+	$result = mysql_query($selectData, $connection) or die($selectData."<br/><br/>".mysql_error());
+	
+	$row = mysql_fetch_array($result);
+	$fileName = $row['data'];
+	
+	$success = FALSE;
+	
+	if(file_exists($fileName))
+	{
+		$success = unlink($fileName);
+	}
+	
+	if(!$success)
+	{
+		echo('delete failed');
+	}
+	
     $result = mysql_query($selectFrameIndex, $connection) or die($selectFrameIndex."<br/><br/>".mysql_error());
     $result = mysql_query($updateFrameIndices, $connection) or die($updateFrameIndices."<br/><br/>".mysql_error());
     $result = mysql_query($deleteAnimFrames, $connection) or die($deleteAnimFrames."<br/><br/>".mysql_error());
