@@ -135,7 +135,7 @@ MonoBehaviour:
   loadingTxt: {fileID: 1586358246}
   buttonGroup: {fileID: 12132752}
   frameEditScreen: {fileID: 485044220}
-  usingSprout: 0
+  usingSprout: 1
   testTexture: {fileID: 2800000, guid: 99e24f47581fc85468948031ef5c6a8c, type: 3}
 --- !u!1 &23412387
 GameObject:
@@ -4219,7 +4219,7 @@ MonoBehaviour:
   loadingTxt: {fileID: 1985493388}
   buttonGroup: {fileID: 1430901722}
   frameEditScreen: {fileID: 372270376}
-  usingSprout: 0
+  usingSprout: 1
   testTexture: {fileID: 2800000, guid: 99e24f47581fc85468948031ef5c6a8c, type: 3}
 --- !u!1 &1438747402
 GameObject:

@@ -36,7 +36,7 @@ public static class SproutExtension
     public static Texture2D captureFrame()
     {
         const int DOWN_SAMPLE_RATE = 1;
-        int FRAME_WIDTH = 512;
+        int FRAME_WIDTH = 2048;
 
         Texture2D frame;
         IPcLink link = HPPC.CreateLink();
@@ -79,7 +79,7 @@ public static class SproutExtension
 
         frame.Apply();
 
-        //TextureScale.Point(frame, 512, 512);
+        TextureScale.Point(frame, 1024 , 1024);
 
         return frame;
     }
