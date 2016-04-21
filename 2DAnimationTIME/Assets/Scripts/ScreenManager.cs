@@ -34,8 +34,8 @@ public class ScreenManager : MonoBehaviour
     void Start()
     {
         // The following is all test data.
-        currentFigurine = new TIME.Figurine("680088977f");
-        StartCoroutine(DatabaseManager.getInstance().getAnimations(currentFigurine));
+        //currentFigurine = new TIME.Figurine("680088977f");
+        //StartCoroutine(DatabaseManager.getInstance().getAnimations(currentFigurine));
         //TIME.Animation anim = new TIME.Animation("idle");
         //TIME.Frame frame = new TIME.Frame(), frame2 = new TIME.Frame(), frame3 = new TIME.Frame();
         //frame.texture = testTexture;
@@ -49,23 +49,6 @@ public class ScreenManager : MonoBehaviour
         //anim.frames.Add(frame3);
         //currentFigurine.animations.Add(anim);
     }
-
-    //public void changeState(ScreenStates newState)
-    //{
-    //    currentState = newState;
-    //    disableAllScreens();
-    //    enableScreen(currentState);
-    //}
-
-    //private void disableAllScreens()
-    //{
-    //    placeRfidScreenTop.SetActive(false);
-    //    animationListScreenTop.SetActive(false);
-    //    animationPreviewScreenTop.SetActive(false);
-    //    animationListScreenBottom.SetActive(false);
-    //    animationEditScreenBottom.SetActive(false);
-    //    frameEditScreenBottom.SetActive(false);
-    //}
 
     public void goToHomeScreen()
     {
