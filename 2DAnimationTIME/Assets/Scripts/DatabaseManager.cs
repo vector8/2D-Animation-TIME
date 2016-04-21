@@ -6,6 +6,8 @@ public class DatabaseManager : MonoBehaviour
 {
     public string databaseAddress;
 
+    public bool doneFetchingAnimations = false;
+
     private static DatabaseManager databaseManager = null;
 
     public TIME.Animation createdAnimation;
@@ -56,11 +58,10 @@ public class DatabaseManager : MonoBehaviour
 
                     figurine.animations.Add(anim);
                 }
-
-                // do something with results[0], results[1], etc.
-                //yield return StartCoroutine(addComponentByName(p.first, p.second, vals[1], vals[2], vals[3], vals[4], vals[5], vals[6]));
             }
         }
+
+        doneFetchingAnimations = true;
     }
 
     public IEnumerator createAnimation(string rfidKey)
