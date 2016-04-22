@@ -5,16 +5,19 @@ using Phidgets;
 
 public class PhidgetsController : MonoBehaviour
 {
+    public ScreenManager screenManager;
+
     private RFID reader;
     private bool tagFound = false;
     private bool tagPresent = false;
-
-    public ScreenManager screenManager;
+    private DatabaseManager dbMgr;
+    private bool waitingForAnimations = false;
 
     // Use this for initialization
     void Start()
     {
         screenManager = FindObjectOfType<ScreenManager>();
+        dbMgr = DatabaseManager.getInstance();
         reader = new RFID();
         reader.Tag += tagAdded;
         reader.TagLost += tagRemoved;
@@ -27,20 +30,27 @@ public class PhidgetsController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(waitingForAnimations && dbMgr.doneFetchingAnimations)
+        {
+            dbMgr.doneFetchingAnimations = false;
+            waitingForAnimations = false;
+            screenManager.goToAnimationListScreen();
+        }
+        else if(!waitingForAnimations && dbMgr.doneFetchingAnimations)
+        {
+            dbMgr.doneFetchingAnimations = false;
+        }
+
         if (tagFound && !tagPresent)
         {
             tagPresent = true;
+            waitingForAnimations = true;
             screenManager.currentFigurine = new TIME.Figurine(reader.LastTag);
-            DatabaseManager dbMgr = DatabaseManager.getInstance();
             StartCoroutine(dbMgr.getAnimations(screenManager.currentFigurine));
-
-            while (!dbMgr.doneFetchingAnimations) ;
-
-            dbMgr.doneFetchingAnimations = false;
-            screenManager.goToAnimationListScreen();
         }
         else if (!tagFound && tagPresent)
         {
+            waitingForAnimations = false;
             tagPresent = false;
             screenManager.goToHomeScreen();
         }

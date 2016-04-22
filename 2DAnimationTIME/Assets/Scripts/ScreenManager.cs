@@ -8,6 +8,7 @@ public class ScreenManager : MonoBehaviour
     public TIME.Figurine currentFigurine;
 
     private static ScreenManager screenManager = null;
+    private bool waitingForAnimations = false;
 
     public static ScreenManager getInstance()
     {
@@ -21,6 +22,29 @@ public class ScreenManager : MonoBehaviour
 
     void Start()
     {
+    }
+
+    void Update()
+    {
+        if(placeRfidScreenTop.activeSelf)
+        {
+            DatabaseManager dbMgr = DatabaseManager.getInstance();
+            if (waitingForAnimations)
+            {
+                if (dbMgr.doneFetchingAnimations)
+                {
+                    waitingForAnimations = false;
+                    dbMgr.doneFetchingAnimations = false;
+                    goToAnimationListScreen();
+                }
+            }
+            else if (Input.GetKeyDown(KeyCode.Space))
+            {
+                currentFigurine = new TIME.Figurine("680088977f");
+                StartCoroutine(dbMgr.getAnimations(currentFigurine));
+                waitingForAnimations = true;
+            }
+        }
     }
 
     public void goToHomeScreen()
